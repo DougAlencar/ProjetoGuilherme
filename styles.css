@@ -1,0 +1,141 @@
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.celular {
+    width: 300px;
+    height: 600px;
+    background-color: #dcdcdc; /* Cor cinza claro */
+    border-radius: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo {
+    width: 80%; /* Aumentar a largura da imagem do logo */
+    max-width: 200px; /* Definir um tamanho máximo para a imagem */
+    height: auto; /* Manter a proporção da imagem */
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 15px; /* Espaço acima do logo */
+}
+
+.tela {
+    width: 90%;
+    height: 80%; /* Aumentar a altura da tela para deixá-la maior */
+    background-color: #fff;
+    border-radius: 20px;
+    margin-top: 10px; /* Espaço entre o logo e a tela */
+    padding: 20px;
+    font-size: 18px;
+    color: #333;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.tela h3 {
+    color: #ff7e5f;
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 20px; /* Aumentar margem superior para descer os textos */
+}
+
+.tela p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.botoes {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    background: #dcdcdc; /* Cor cinza claro para combinar com o celular */
+    border-radius: 0 0 30px 30px; /* Manter bordas arredondadas */
+}
+
+.botao {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(145deg, #666, #888); /* Ajuste da cor dos botões */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.botao:hover {
+    transform: scale(1.1);
+    background: linear-gradient(145deg, #888, #aaa); /* Ajuste para um tom mais claro ao passar o mouse */
+}
+
+.imagem-botao {
+    width: 70%; /* Definindo a largura da imagem no CSS */
+}
+
+.input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+select, button, input, textarea {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #ff7e5f;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #feb47b;
+}
+
+button {
+    background-color: #ff7e5f;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #feb47b;
+}
+
+.remove-button {
+    color: #d9534f;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.remove-button:hover {
+    color: #c9302c;
+}
