@@ -4,133 +4,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Celular com Botões</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-color: #f0f0f0;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
     }
 
     .celular {
       width: 300px;
       height: 600px;
-      background-color: #333;
+      background-color: #444;
       border-radius: 30px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
       position: relative;
+      overflow: hidden;
     }
 
     .tela {
       width: 90%;
       height: 80%;
-      background-color: #ffffff;
+      background-color: #fff;
       border-radius: 20px;
       margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      font-size: 20px;
-      padding: 10px;
+      padding: 60px 20px 20px; /* espaçamento superior ajustado */
+      font-size: 18px;
+      color: #333;
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
+    }
+
+    .tela h3 {
+      color: #ff7e5f;
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    .tela p {
+      color: #666;
+      margin-bottom: 10px;
     }
 
     .botoes {
       width: 100%;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      padding: 15px 0;
+      background: #333;
+      border-radius: 0 0 30px 30px;
     }
 
     .botao {
-      width: 50px;
-      height: 50px;
-      background-color: #888;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(145deg, #555, #888);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      color: white;
+      color: #fff;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
 
     .botao:hover {
-      background-color: #555;
+      transform: scale(1.1);
+      background: linear-gradient(145deg, #777, #999);
     }
 
     .input-area {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 15px;
+      margin-top: 15px;
     }
 
-    select, button, input {
-      padding: 5px 10px;
+    select, button, input, textarea {
+      padding: 8px 12px;
       font-size: 16px;
+      border: 2px solid #ff7e5f;
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #feb47b;
+    }
+
+    button {
+      background-color: #ff7e5f;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #feb47b;
     }
 
     .remove-button {
-      color: red;
+      color: #d9534f;
       cursor: pointer;
       margin-left: 10px;
       font-size: 14px;
+      transition: color 0.3s ease;
     }
 
-    /* Estilo do gráfico */
-    #energyChart {
-      width: 100%;
-      height: 100%;
+    .remove-button:hover {
+      color: #c9302c;
     }
 
-    /* Estilo do botão Voltar */
-    .voltar-button {
-      margin-top: 10px;
+    /* Estilo para fixar a imagem no canto superior direito */
+    .logo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
       padding: 10px;
-      background-color: #888;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .voltar-button:hover {
-      background-color: #555;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
 <body>
 
   <div class="celular">
-    <div class="tela" id="tela">Clique em um botão</div>
+    <!-- Imagem fixa no canto superior direito -->
+    <div class="logo">
+      <img src="IMG/logoCompleto.png" alt="Logo" width="200px">
+    </div>
+    <div class="tela" id="tela"></div>
     <div class="botoes">
-      <div class="botao" onclick="getWeather()">1</div>
-      <div class="botao" onclick="openSolarPanelForm()">2</div>
-      <div class="botao" onclick="giveUsageTips()">3</div>
-      <div class="botao" onclick="openContactForm()">4</div>
-      <div class="botao" onclick="showEnergyStatistics()">5</div>
+      <div class="botao" onclick="getWeather()"><img src="IMG/nublado.png" alt="" width="70%"></div>
+      <div class="botao" onclick="openSolarPanelForm()"><img src="IMG/painel-solar.png" alt="" width="70%"></div>
+      <div class="botao" onclick="giveUsageTips()"><img src="IMG/lampada-de-ideia.png" alt="" width="70%"></div>
+      <div class="botao" onclick="openContactForm()"><img src="IMG/bate-papo.png" alt="" width="70%"></div>
     </div>
   </div>
-
-  <canvas id="energyChart" style="display: none;"></canvas>
 
   <script>
     const apiKey = '7a8ca7439307e071e3f6181f7cfe3fa9';
     let currentWeather = null;
-    let energyData = [];
-    let labels = [];
 
     async function getWeather() {
       const tela = document.getElementById('tela');
@@ -209,8 +240,8 @@
     }
 
     function removeSolarPanelModel(index) {
-      addedModels.splice(index, 1);
-      openSolarPanelForm();
+      addedModels.splice(index, 1); 
+      openSolarPanelForm(); 
     }
 
     function giveUsageTips() {
@@ -238,84 +269,21 @@
 
         if (lowerDescription.includes("sol") || lowerDescription.includes("céu limpo")) {
           tips = `Ótimo dia para carregar! As placas solares podem gerar até ${generatedPower}W.`;
-          recordEnergyData(generatedPower);
         } else if (lowerDescription.includes("chuva")) {
           generatedPower *= 0.3; 
           tips = `Cuidado! Em dia de chuva, as placas solares podem gerar apenas ${Math.round(generatedPower)}W.`;
-          recordEnergyData(Math.round(generatedPower));
         } else if (lowerDescription.includes("neblina")) {
           generatedPower *= 0.5; 
           tips = `Cuidado com a neblina. As placas podem gerar até ${Math.round(generatedPower)}W.`;
-          recordEnergyData(Math.round(generatedPower));
         } else if (lowerDescription.includes("nublado") || lowerDescription.includes("nuvens dispersas")) {
           generatedPower *= 0.4; 
           tips = `Dia nublado, a geração de energia pode ser de ${Math.round(generatedPower)}W.`;
-          recordEnergyData(Math.round(generatedPower));
         } else {
           tips = "Condições climáticas não identificadas. Verifique as placas regularmente.";
         }
       }
 
       tela.innerHTML = `<h3>Dicas de Uso</h3><p>${tips}</p>`;
-    }
-
-    function recordEnergyData(generatedPower) {
-      energyData.push(generatedPower);
-      labels.push(new Date().toLocaleTimeString()); // Adiciona o timestamp
-    }
-
-    function showEnergyStatistics() {
-      const tela = document.getElementById('tela');
-      tela.style.display = "none"; // Oculta a tela do celular
-      document.getElementById('energyChart').style.display = "block"; // Mostra o gráfico
-
-      const ctx = document.getElementById('energyChart').getContext('2d');
-      const energyChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Geração de Energia (W)',
-            data: energyData,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 2,
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Watts'
-              }
-            },
-            x: {
-              title: {
-                display: true,
-                text: 'Hora'
-              }
-            }
-          }
-        }
-      });
-
-      const voltarButton = document.createElement('button');
-      voltarButton.className = 'voltar-button';
-      voltarButton.innerText = 'Voltar';
-      voltarButton.onclick = hideEnergyStatistics;
-      document.getElementById('energyChart').appendChild(voltarButton);
-    }
-
-    function hideEnergyStatistics() {
-      const tela = document.getElementById('tela');
-      tela.style.display = "flex"; // Mostra a tela do celular
-      document.getElementById('energyChart').style.display = "none"; // Oculta o gráfico
-      document.getElementById('energyChart').getContext('2d').clearRect(0, 0, energyChart.width, energyChart.height); // Limpa o gráfico
-      energyData = [];
-      labels = []; // Reseta os dados ao voltar
     }
 
     function openContactForm() {
