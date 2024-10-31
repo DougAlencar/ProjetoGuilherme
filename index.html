@@ -38,10 +38,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
       font-size: 20px;
       padding: 10px;
+      overflow-y: auto;
     }
 
     /* Botões na parte inferior */
@@ -70,10 +70,18 @@
       background-color: #555;
     }
 
-    /* Ícone do clima */
-    .icone-clima {
-      width: 80px;
-      height: 80px;
+    /* Estilo da lista de seleção */
+    .input-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    select, button {
+      padding: 5px 10px;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -83,17 +91,19 @@
     <div class="tela" id="tela">Clique em um botão</div>
     <div class="botoes">
       <div class="botao" onclick="getWeather()">1</div>
-      <div class="botao" onclick="buttonClick('Botão 2')">2</div>
-      <div class="botao" onclick="buttonClick('Botão 3')">3</div>
+      <div class="botao" onclick="openSolarPanelForm()">2</div>
+      <div class="botao" onclick="giveUsageTips()">3</div>
       <div class="botao" onclick="buttonClick('Botão 4')">4</div>
     </div>
   </div>
 
   <script>
+    const apiKey = '7a8ca7439307e071e3f6181f7cfe3fa9';
+    let currentWeather = null;
+
+    // Função para buscar previsão do tempo
     async function getWeather() {
       const tela = document.getElementById('tela');
-      const apiKey = '7a8ca7439307e071e3f6181f7cfe3fa9'; // Insira sua chave de API aqui
-
       tela.innerHTML = "Obtendo localização...";
 
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -103,13 +113,15 @@
 
         try {
           const response = await fetch(url);
-          if (!response.ok) throw new Error('Erro ao buscar dados');
+          if (!response.ok) throw new Error(`Erro: ${response.status} - ${response.statusText}`);
 
           const data = await response.json();
           const temp = data.main.temp;
           const description = data.weather[0].description;
           const city = data.name;
           const icon = data.weather[0].icon;
+
+          currentWeather = { temp, description, city, icon }; // Armazenando a previsão do tempo
 
           tela.innerHTML = `
             <p>Temperatura em ${city}: ${temp}°C</p>
@@ -122,6 +134,92 @@
       }, () => {
         tela.innerHTML = "Permissão de localização negada.";
       });
+    }
+
+    // Modelos de placas solares pré-definidos
+    const solarPanelModels = [
+      "Modelo A - 250W",
+      "Modelo B - 300W",
+      "Modelo C - 350W",
+      "Modelo D - 400W"
+    ];
+
+    // Lista para armazenar os modelos adicionados
+    const addedModels = [];
+
+    // Função para abrir o formulário de seleção de placas solares
+    function openSolarPanelForm() {
+      const tela = document.getElementById('tela');
+      
+      tela.innerHTML = `
+        <h3>Adicionar Placa Solar</h3>
+        <div class="input-area">
+          <select id="solarModelSelect">
+            ${solarPanelModels.map(model => `<option value="${model}">${model}</option>`).join('')}
+          </select>
+          <button onclick="addSolarPanelModel()">Adicionar</button>
+        </div>
+        <ul id="solarPanelList">${addedModels.map(model => `<li>${model}</li>`).join('')}</ul>
+      `;
+    }
+
+    // Função para adicionar o modelo selecionado à lista
+    function addSolarPanelModel() {
+      const select = document.getElementById('solarModelSelect');
+      const model = select.value;
+
+      if (model) {
+        addedModels.push(model); // Adiciona o modelo à lista
+        openSolarPanelForm(); // Recarrega a tela com a lista atualizada
+      }
+    }
+
+    // Função para dar dicas de uso com base na previsão do tempo
+    function giveUsageTips() {
+      const tela = document.getElementById('tela');
+      
+      if (!currentWeather) {
+        tela.innerHTML = "Primeiro, obtenha a previsão do tempo.";
+        return;
+      }
+
+      const { description } = currentWeather;
+      let tips = "";
+
+      // Convertendo a descrição para minúsculas para melhor comparação
+      const lowerDescription = description.toLowerCase();
+      console.log("Descrição do tempo:", lowerDescription); // Log para depuração
+
+      // Verificações melhoradas para várias condições climáticas
+      if (addedModels.length === 0) {
+        tips = "Adicione placas solares para calcular a produção de energia.";
+      } else {
+        // Cálculo da capacidade de geração de energia
+        const totalWatts = addedModels.reduce((total, model) => {
+          const watts = parseInt(model.match(/\d+/)[0]); // Captura o valor em Watts
+          return total + watts;
+        }, 0);
+
+        let generatedPower = totalWatts; // A quantidade de energia gerada
+
+        // Determinando a energia gerada com base na condição do tempo
+        if (lowerDescription.includes("sol") || lowerDescription.includes("céu limpo")) {
+          tips = `Ótimo dia para carregar! As placas solares podem gerar até ${generatedPower}W.`;
+        } else if (lowerDescription.includes("chuva")) {
+          generatedPower *= 0.3; // Reduzindo para 30% da capacidade
+          tips = `Cuidado! Em dia de chuva, as placas solares podem gerar apenas ${Math.round(generatedPower)}W.`;
+        } else if (lowerDescription.includes("neblina")) {
+          generatedPower *= 0.5; // Reduzindo para 50% da capacidade
+          tips = `Cuidado com a neblina. As placas podem gerar até ${Math.round(generatedPower)}W.`;
+        } else if (lowerDescription.includes("nublado") || lowerDescription.includes("nuvens dispersas")) {
+          generatedPower *= 0.4; // Reduzindo para 40% da capacidade
+          tips = `Dia nublado, a geração de energia pode ser de ${Math.round(generatedPower)}W.`;
+        } else {
+          tips = "Condições climáticas não identificadas. Verifique as placas regularmente.";
+        }
+      }
+
+      tela.innerHTML = `<h3>Dicas de Uso</h3><p>${tips}</p>`;
     }
 
     function buttonClick(button) {
