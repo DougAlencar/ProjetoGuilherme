@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -18,7 +18,7 @@ body {
 .celular {
     width: 300px;
     height: 600px;
-    background-color: #dcdcdc; /* Cor cinza claro */
+    background-color: #dcdcdc; 
     border-radius: 30px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -29,22 +29,22 @@ body {
 }
 
 .logo {
-    width: 80%; /* Aumentar a largura da imagem do logo */
-    max-width: 200px; /* Definir um tamanho máximo para a imagem */
-    height: auto; /* Manter a proporção da imagem */
+    width: 80%; 
+    max-width: 200px; 
+    height: auto; 
     padding: 10px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 15px; /* Espaço acima do logo */
+    margin-top: 15px; 
 }
 
 .tela {
     width: 90%;
-    height: 80%; /* Aumentar a altura da tela para deixá-la maior */
+    height: 80%; 
     background-color: #fff;
     border-radius: 20px;
-    margin-top: 10px; /* Espaço entre o logo e a tela */
+    margin-top: 10px; 
     padding: 20px;
     font-size: 18px;
     color: #333;
@@ -56,7 +56,7 @@ body {
     color: #ff7e5f;
     font-weight: bold;
     font-size: 22px;
-    margin-top: 20px; /* Aumentar margem superior para descer os textos */
+    margin-top: 20px; 
 }
 
 .tela p {
@@ -69,14 +69,14 @@ body {
     display: flex;
     justify-content: space-around;
     padding: 10px 0;
-    background: #dcdcdc; /* Cor cinza claro para combinar com o celular */
-    border-radius: 0 0 30px 30px; /* Manter bordas arredondadas */
+    background: #dcdcdc; 
+    border-radius: 0 0 30px 30px;
 }
 
 .botao {
     width: 55px;
     height: 55px;
-    background: linear-gradient(145deg, #666, #888); /* Ajuste da cor dos botões */
+    background: linear-gradient(145deg, #666, #888);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -88,11 +88,11 @@ body {
 
 .botao:hover {
     transform: scale(1.1);
-    background: linear-gradient(145deg, #888, #aaa); /* Ajuste para um tom mais claro ao passar o mouse */
+    background: linear-gradient(145deg, #888, #aaa); 
 }
 
 .imagem-botao {
-    width: 70%; /* Definindo a largura da imagem no CSS */
+    width: 70%; 
 }
 
 .input-area {
