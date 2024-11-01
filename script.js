@@ -42,7 +42,23 @@ const solarPanelModels = [
   "Modelo D - 400W"
 ];
 
-const addedModels = [];
+const batteryModels = [
+  "Bateria A - 100Ah",
+  "Bateria B - 200Ah",
+  "Bateria C - 300Ah",
+  "Bateria D - 400Ah"
+];
+
+const addedSolarPanels = [];
+const addedBatteries = [];
+
+function showWelcomeMessage() {
+  const tela = document.getElementById('tela');
+  tela.innerHTML = `
+    <h3>Bem-vindo!</h3>
+    <p>Adicione suas placas solares e baterias para começar a calcular a geração de energia e a carga das baterias.</p>
+  `;
+}
 
 function openSolarPanelForm() {
   const tela = document.getElementById('tela');
@@ -56,11 +72,19 @@ function openSolarPanelForm() {
       <button onclick="addSolarPanelModel()">Adicionar</button>
     </div>
     <ul id="solarPanelList">${getSolarPanelList()}</ul>
+    <h3>Adicionar Bateria</h3>
+    <div class="input-area">
+      <select id="batteryModelSelect">
+        ${batteryModels.map(model => `<option value="${model}">${model}</option>`).join('')}
+      </select>
+      <button onclick="addBatteryModel()">Adicionar</button>
+    </div>
+    <ul id="batteryList">${getBatteryList()}</ul>
   `;
 }
 
 function getSolarPanelList() {
-  return addedModels.map((model, index) => `
+  return addedSolarPanels.map((model, index) => `
     <li>
       ${model} 
       <span class="remove-button" onclick="removeSolarPanelModel(${index})">Remover</span>
@@ -72,13 +96,36 @@ function addSolarPanelModel() {
   const model = select.value;
 
   if (model) {
-    addedModels.push(model);
+    addedSolarPanels.push(model);
     openSolarPanelForm();
   }
 }
 
 function removeSolarPanelModel(index) {
-  addedModels.splice(index, 1); 
+  addedSolarPanels.splice(index, 1); 
+  openSolarPanelForm(); 
+}
+
+function getBatteryList() {
+  return addedBatteries.map((model, index) => `
+    <li>
+      ${model} 
+      <span class="remove-button" onclick="removeBatteryModel(${index})">Remover</span>
+    </li>`).join('');
+}
+
+function addBatteryModel() {
+  const select = document.getElementById('batteryModelSelect');
+  const model = select.value;
+
+  if (model) {
+    addedBatteries.push(model);
+    openSolarPanelForm();
+  }
+}
+
+function removeBatteryModel(index) {
+  addedBatteries.splice(index, 1); 
   openSolarPanelForm(); 
 }
 
@@ -95,10 +142,10 @@ function giveUsageTips() {
 
   const lowerDescription = description.toLowerCase();
 
-  if (addedModels.length === 0) {
-    tips = "Adicione placas solares para calcular a produção de energia.";
+  if (addedSolarPanels.length === 0 && addedBatteries.length === 0) {
+    tips = "Adicione placas solares e baterias para calcular a produção de energia.";
   } else {
-    const totalWatts = addedModels.reduce((total, model) => {
+    const totalWatts = addedSolarPanels.reduce((total, model) => {
       const watts = parseInt(model.match(/\d+/)[0]);
       return total + watts;
     }, 0);
@@ -119,6 +166,20 @@ function giveUsageTips() {
     } else {
       tips = "Condições climáticas não identificadas. Verifique as placas regularmente.";
     }
+
+    if (addedBatteries.length === 0) {
+      tips += "<br> Não há baterias adicionadas.";
+    } else {
+      const totalAh = addedBatteries.reduce((total, model) => {
+        const ah = parseInt(model.match(/\d+/)[0]);
+        return total + ah;
+      }, 0);
+      
+      tips += `<br>Total de capacidade de bateria: ${totalAh}Ah.`;
+      
+      const timeToCharge = (totalAh * 12) / generatedPower; // Exemplo: 12V para cálculo
+      tips += `<br>Tempo estimado para carregar as baterias: ${Math.round(timeToCharge)} horas.`;
+    }
   }
 
   tela.innerHTML = `<h3>Dicas de Uso</h3><p>${tips}</p>`;
@@ -137,3 +198,6 @@ function openContactForm() {
     </form>
   `;
 }
+
+// Inicialização
+showWelcomeMessage();
